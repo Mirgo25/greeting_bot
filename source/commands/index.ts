@@ -64,23 +64,6 @@ commands.callbackQuery(CALLBACK_QUERY_TRIGGER.VIDEOS, async (ctx) =>
   }),
 );
 
-// commands.inlineQuery(INLINE_QUERY_TRIGGER.SEND_PICTURE, async (ctx) => {
-//   const results: InlineQueryResult[] = [];
-//   let button: InlineQueryResultsButton | undefined = undefined;
-
-//   const { file } = ctx.session as { file: Nullable<PhotoSize> };
-//   if (!file) {
-//     button = {
-//       text: SEND_GIFT,
-//       start_parameter: 'start',
-//     };
-//   } else {
-//     results.push(InlineQueryResultBuilder.photoCached(uuidv4(), file.file_id));
-//   }
-
-//   await ctx.answerInlineQuery(results, { cache_time: 0, button });
-// });
-
 commands.inlineQuery(INLINE_QUERY_TRIGGER.SEND_PICTURE, async (ctx) =>
   handleInlineQuery({
     ctx,
@@ -88,52 +71,12 @@ commands.inlineQuery(INLINE_QUERY_TRIGGER.SEND_PICTURE, async (ctx) =>
   }),
 );
 
-// commands.inlineQuery(INLINE_QUERY_TRIGGER.SEND_ANIMATION, async (ctx) => {
-//   const results: InlineQueryResult[] = [];
-//   let button: InlineQueryResultsButton | undefined = undefined;
-
-//   const { file } = ctx.session as { file: Nullable<Animation> };
-//   if (!file) {
-//     button = {
-//       text: SEND_GIFT,
-//       start_parameter: 'start',
-//     };
-//   } else {
-//     results.push(InlineQueryResultBuilder.gifCached(uuidv4(), file.file_id));
-//   }
-
-//   await ctx.answerInlineQuery(results, { cache_time: 0, button });
-// });
-
 commands.inlineQuery(INLINE_QUERY_TRIGGER.SEND_ANIMATION, async (ctx) =>
   handleInlineQuery({
     ctx,
     mediaType: INLINE_QUERY_TRIGGER.SEND_ANIMATION,
   }),
 );
-
-// commands.inlineQuery(INLINE_QUERY_TRIGGER.SEND_VIDEO, async (ctx) => {
-//   const results: InlineQueryResult[] = [];
-//   let button: InlineQueryResultsButton | undefined = undefined;
-
-//   const { file } = ctx.session as { file: Nullable<Video> };
-//   if (!file) {
-//     button = {
-//       text: SEND_GIFT,
-//       start_parameter: 'start',
-//     };
-//   } else {
-//     results.push(
-//       InlineQueryResultBuilder.videoCached(
-//         uuidv4(),
-//         file.file_name ?? 'Гарне відео',
-//         file.file_id,
-//       ),
-//     );
-//   }
-
-//   await ctx.answerInlineQuery(results, { cache_time: 0, button });
-// });
 
 commands.inlineQuery(INLINE_QUERY_TRIGGER.SEND_VIDEO, async (ctx) =>
   handleInlineQuery({

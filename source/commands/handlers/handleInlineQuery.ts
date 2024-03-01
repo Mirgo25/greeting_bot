@@ -1,5 +1,5 @@
 import { InlineQueryResultBuilder, type InlineQueryContext } from 'grammy';
-import { InlineQueryResult, InlineQueryResultsButton } from 'grammy/types';
+import type { InlineQueryResult, InlineQueryResultsButton } from 'grammy/types';
 import { SEND_GIFT } from '../../constants/captions';
 import type { CustomContext } from '../../context';
 import { v4 as uuidv4 } from 'uuid';

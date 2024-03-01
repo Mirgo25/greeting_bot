@@ -1,5 +1,5 @@
 import type { BotError, NextFunction } from 'grammy';
-import { CustomContext } from './context';
+import type { CustomContext } from './context';
 import { BotClients } from './settings/clients';
 
 function extendContext(

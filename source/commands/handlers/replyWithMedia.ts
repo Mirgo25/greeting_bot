@@ -1,4 +1,4 @@
-import { CallbackQueryContext, InlineKeyboard, InputFile } from 'grammy';
+import { type CallbackQueryContext, InlineKeyboard, InputFile } from 'grammy';
 import {
   SEND_GIFT,
   PREVIOUS,
@@ -9,7 +9,7 @@ import {
   CALLBACK_QUERY_TRIGGER,
   INLINE_QUERY_TRIGGER,
 } from '../../constants/queries';
-import { CustomContext } from '../../context';
+import type { CustomContext } from '../../context';
 import { getMediaNames } from '../../utils/getFileNames';
 
 type ReplyWithMediaOptions = {
