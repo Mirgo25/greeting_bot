@@ -1,0 +1,23 @@
+{
+  "name": "greeting-bot",
+  "version": "1.0.0",
+  "description": "A telegram bot for greeting users with pictures",
+  "main": "bot.js",
+  "scripts": {
+    "dev": "npx nodemon source/bot.ts | pino-pretty --translateTime"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.22",
+    "@types/uuid": "^9.0.8",
+    "nodemon": "^3.1.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "grammy": "^1.21.1",
+    "pino": "^8.19.0",
+    "pino-pretty": "^10.3.1",
+    "uuid": "^9.0.1"
+  }
+}
