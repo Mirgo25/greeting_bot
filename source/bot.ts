@@ -1,7 +1,7 @@
 import { Bot, type Context, session } from 'grammy';
 import { getConfig } from './settings/config';
 import type { CustomContext, CustomSession } from './context';
-import commands from './commands';
+import commands from './commands/commands';
 import { errorHandler, preMiddlewares } from './middlewares';
 import { getClients } from './settings/clients';
 
@@ -27,6 +27,9 @@ async function main() {
         animationFile: null,
         photoFile: null,
         videoFile: null,
+        photoCount: 0,
+        animationCount: 0,
+        videoCount: 0,
       }),
       getSessionKey,
     }),

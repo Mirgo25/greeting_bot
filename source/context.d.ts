@@ -7,6 +7,9 @@ export type CustomSession = {
   photoFile: Nullable<PhotoSize>;
   animationFile: Nullable<Animation>;
   videoFile: Nullable<Video>;
+  photoCount: number;
+  animationCount: number;
+  videoCount: number;
 };
 
 export type CustomContext = Context &

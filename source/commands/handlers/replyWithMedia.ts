@@ -1,9 +1,13 @@
-import { type CallbackQueryContext, InlineKeyboard, InputFile } from 'grammy';
+import {
+  type CallbackQueryContext,
+  InlineKeyboard,
+  InputFile,
+  CommandContext,
+} from 'grammy';
 import {
   SEND_GIFT,
-  PREVIOUS,
-  NEXT,
   WRONG_GIFT_TYPE,
+  CHOOSE_ANOTHER_MEDIA,
 } from '../../constants/captions';
 import {
   CALLBACK_QUERY_TRIGGER,
@@ -11,9 +15,10 @@ import {
 } from '../../constants/queries';
 import type { CustomContext } from '../../context';
 import { getMediaNames } from '../../utils/getFileNames';
+import { getArrowsKeyboard } from '../../utils/getArrowsKeyboard';
 
 type ReplyWithMediaOptions = {
-  ctx: CallbackQueryContext<CustomContext>;
+  ctx: CallbackQueryContext<CustomContext> | CommandContext<CustomContext>;
   mediaType: CALLBACK_QUERY_TRIGGER;
   mediaPath: string;
   notFoundMessage: string;
@@ -33,13 +38,26 @@ export async function replyWithMedia({
   }
   const inlineKeyboard = new InlineKeyboard()
     .switchInline(SEND_GIFT, inlineQueryTrigger)
-    .row()
-    .text(PREVIOUS, CALLBACK_QUERY_TRIGGER.PREVIOUS)
-    .text(NEXT, CALLBACK_QUERY_TRIGGER.NEXT);
+    .row();
+  let replyMarkup: InlineKeyboard;
+
+  // Check if it was the /start command
+  if (
+    ctx.message?.text?.match(/\/start/) &&
+    ctx.message?.entities &&
+    ctx.message.entities[0].type === 'bot_command'
+  ) {
+    replyMarkup = inlineKeyboard.text(
+      CHOOSE_ANOTHER_MEDIA,
+      CALLBACK_QUERY_TRIGGER.NEXT,
+    );
+  } else {
+    replyMarkup = getArrowsKeyboard(inlineKeyboard, mediaNames.length);
+  }
 
   const inputfile = new InputFile(`${mediaPath}/${mediaNames[0]}`);
   const replyOptions = {
-    reply_markup: inlineKeyboard,
+    reply_markup: replyMarkup,
   };
 
   switch (mediaType) {
@@ -54,9 +72,7 @@ export async function replyWithMedia({
       break;
     }
     case CALLBACK_QUERY_TRIGGER.VIDEOS: {
-      const result = await ctx.replyWithVideo(inputfile, {
-        reply_markup: inlineKeyboard,
-      });
+      const result = await ctx.replyWithVideo(inputfile, replyOptions);
       ctx.session.videoFile = result.video;
       break;
     }

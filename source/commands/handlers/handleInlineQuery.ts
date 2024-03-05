@@ -1,9 +1,22 @@
-import { InlineQueryResultBuilder, type InlineQueryContext } from 'grammy';
-import type { InlineQueryResult, InlineQueryResultsButton } from 'grammy/types';
-import { SEND_GIFT } from '../../constants/captions';
+import {
+  InlineQueryResultBuilder,
+  type InlineQueryContext,
+  InlineKeyboard,
+} from 'grammy';
+import type {
+  InlineQueryResult,
+  InlineQueryResultsButton,
+  ParseMode,
+} from 'grammy/types';
+import {
+  HAVE_GIFT,
+  SEND_GIFT,
+  SEND_GIFT_RETURN,
+} from '../../constants/captions';
 import type { CustomContext } from '../../context';
 import { v4 as uuidv4 } from 'uuid';
 import { INLINE_QUERY_TRIGGER } from '../../constants/queries';
+import { BOT_LINK } from '../../constants/links';
 
 type AnswerInlineQueryOptions = {
   ctx: InlineQueryContext<CustomContext>;
@@ -19,20 +32,37 @@ export async function handleInlineQuery({
     text: SEND_GIFT,
     start_parameter: 'start',
   };
+  const options: {
+    caption: string;
+    parse_mode: ParseMode;
+    reply_markup: InlineKeyboard;
+  } = {
+    caption: `<b><i>${HAVE_GIFT}</i></b>`,
+    parse_mode: 'HTML',
+    reply_markup: new InlineKeyboard().url(SEND_GIFT_RETURN, BOT_LINK),
+  };
 
   const { animationFile, photoFile, videoFile } = ctx.session;
   switch (mediaType) {
     case INLINE_QUERY_TRIGGER.SEND_PICTURE:
       if (photoFile)
         results.push(
-          InlineQueryResultBuilder.photoCached(uuidv4(), photoFile.file_id),
+          InlineQueryResultBuilder.photoCached(
+            uuidv4(),
+            photoFile.file_id,
+            options,
+          ),
         );
       break;
 
     case INLINE_QUERY_TRIGGER.SEND_ANIMATION:
       if (animationFile)
         results.push(
-          InlineQueryResultBuilder.gifCached(uuidv4(), animationFile.file_id),
+          InlineQueryResultBuilder.gifCached(
+            uuidv4(),
+            animationFile.file_id,
+            options,
+          ),
         );
       break;
 
@@ -43,6 +73,7 @@ export async function handleInlineQuery({
             uuidv4(),
             videoFile.file_name ?? 'Відео',
             videoFile.file_id,
+            options,
           ),
         );
       break;
