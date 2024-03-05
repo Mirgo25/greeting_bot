@@ -16,6 +16,7 @@ import {
 import type { CustomContext } from '../../context';
 import { getMediaNames } from '../../utils/getFileNames';
 import { getArrowsKeyboard } from '../../utils/getArrowsKeyboard';
+import { sendConfirmMessage } from '../../utils/spam/sendConfirmMessage';
 
 type ReplyWithMediaOptions = {
   ctx: CallbackQueryContext<CustomContext> | CommandContext<CustomContext>;
@@ -32,6 +33,9 @@ export async function replyWithMedia({
   notFoundMessage,
   inlineQueryTrigger,
 }: ReplyWithMediaOptions) {
+  // SPAM
+  await sendConfirmMessage(ctx);
+
   const mediaNames = await getMediaNames(mediaPath);
   if (!mediaNames.length) {
     return ctx.reply(notFoundMessage);

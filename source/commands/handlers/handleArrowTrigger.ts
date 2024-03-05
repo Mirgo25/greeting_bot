@@ -18,6 +18,7 @@ import {
 import type { CustomContext, CustomSession } from '../../context';
 import { getArrowsKeyboard } from '../../utils/getArrowsKeyboard';
 import { getMediaNames } from '../../utils/getFileNames';
+import { sendConfirmMessage } from '../../utils/spam/sendConfirmMessage';
 
 const MEDIA_PATHS = {
   photo: PICTURE_PATH,
@@ -40,6 +41,9 @@ export async function handleArrowTrigger(
     | CALLBACK_QUERY_TRIGGER.PREVIOUS
     | CALLBACK_QUERY_TRIGGER.NEXT,
 ) {
+  // SPAM
+  await sendConfirmMessage(ctx);
+
   const message = ctx.callbackQuery.message;
   if (!message) throw new Error('Message object not found');
 

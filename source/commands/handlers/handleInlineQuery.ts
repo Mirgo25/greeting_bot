@@ -17,6 +17,7 @@ import type { CustomContext } from '../../context';
 import { v4 as uuidv4 } from 'uuid';
 import { INLINE_QUERY_TRIGGER } from '../../constants/queries';
 import { BOT_LINK } from '../../constants/links';
+import { sendConfirmMessage } from '../../utils/spam/sendConfirmMessage';
 
 type AnswerInlineQueryOptions = {
   ctx: InlineQueryContext<CustomContext>;
@@ -27,6 +28,9 @@ export async function handleInlineQuery({
   ctx,
   mediaType,
 }: AnswerInlineQueryOptions) {
+  // SPAM
+  await sendConfirmMessage(ctx);
+
   const results: InlineQueryResult[] = [];
   const button: InlineQueryResultsButton = {
     text: SEND_GIFT,

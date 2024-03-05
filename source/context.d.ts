@@ -10,6 +10,7 @@ export type CustomSession = {
   photoCount: number;
   animationCount: number;
   videoCount: number;
+  userActionCount: number;
 };
 
 export type CustomContext = Context &

@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import { CustomSession } from '../context';
 
 type TelegramConfig = {
   botToken: string;
@@ -26,5 +27,19 @@ export type BotConfig = {
 export function getConfig(): BotConfig {
   return {
     telegram: getTelegramConfig(),
+  };
+}
+
+// --------------------------- //
+
+export function getInitialSessionData(): CustomSession {
+  return {
+    animationFile: null,
+    photoFile: null,
+    videoFile: null,
+    photoCount: 0,
+    animationCount: 0,
+    videoCount: 0,
+    userActionCount: 0,
   };
 }
