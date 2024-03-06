@@ -15,10 +15,14 @@ type ContextOption =
 
 export async function sendConfirmMessage(ctx: ContextOption) {
   ctx.session.userActionCount += 1;
-  if (ctx.session.userActionCount === 3) {
+  if (
+    ctx.session.userActionCount &&
+    ctx.session.userActionCount % 3 === 0 &&
+    !ctx.session.spam.isConfirmed
+  ) {
     const userId = ctx.from?.id;
     if (userId) {
-      return ctx.api.sendMessage(
+      const result = await ctx.api.sendMessage(
         userId,
         `<b>${CONFIRM_YOU_ARE_NOT_ROBOT}</b>`,
         {
@@ -26,6 +30,8 @@ export async function sendConfirmMessage(ctx: ContextOption) {
           reply_markup: new InlineKeyboard().url(CONFIRM, APPROVE_CHANNEL_LINK),
         },
       );
+      ctx.session.spam.confirmMessageIds.push(result.message_id);
+      return;
     }
     throw new Error('User not found');
   }

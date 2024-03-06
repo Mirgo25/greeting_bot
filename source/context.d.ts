@@ -11,6 +11,10 @@ export type CustomSession = {
   animationCount: number;
   videoCount: number;
   userActionCount: number;
+  spam: {
+    confirmMessageIds: number[];
+    isConfirmed: boolean;
+  };
 };
 
 export type CustomContext = Context &

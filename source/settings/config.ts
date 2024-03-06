@@ -41,5 +41,9 @@ export function getInitialSessionData(): CustomSession {
     animationCount: 0,
     videoCount: 0,
     userActionCount: 0,
+    spam: {
+      confirmMessageIds: [],
+      isConfirmed: false
+    },
   };
 }

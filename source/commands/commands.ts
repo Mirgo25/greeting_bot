@@ -38,14 +38,16 @@ import { handleArrowTrigger } from './handlers/handleArrowTrigger';
 const commands = new Composer<CustomContext>();
 
 // ------- COMMANDS -------
-commands.command('start', async (ctx) =>
-  replyWithMedia({
-    ctx,
-    mediaType: CALLBACK_QUERY_TRIGGER.ANIMATIONS,
-    mediaPath: ANIMATION_PATH,
-    notFoundMessage: ANIMATIONS_NOT_FOUND,
-    inlineQueryTrigger: INLINE_QUERY_TRIGGER.SEND_ANIMATION,
-  }),
+commands.command(
+  'start',
+  async (ctx) =>
+    replyWithMedia({
+      ctx,
+      mediaType: CALLBACK_QUERY_TRIGGER.ANIMATIONS,
+      mediaPath: ANIMATION_PATH,
+      notFoundMessage: ANIMATIONS_NOT_FOUND,
+      inlineQueryTrigger: INLINE_QUERY_TRIGGER.SEND_ANIMATION,
+    }),
   // {
   //   const inlineKeyboard = new InlineKeyboard()
   //     .text(PICTURES, CALLBACK_QUERY_TRIGGER.PICTURES)
@@ -122,5 +124,15 @@ commands.inlineQuery(INLINE_QUERY_TRIGGER.SEND_ANIMATION, async (ctx) =>
 //     mediaType: INLINE_QUERY_TRIGGER.SEND_VIDEO,
 //   }),
 // );
+
+// ------- FILTER QUERIES -------
+commands.on('chat_join_request', async (ctx) => {
+  ctx.session.spam.isConfirmed = true;
+  const { user_chat_id } = ctx.chatJoinRequest;
+  await ctx.api.deleteMessages(
+    user_chat_id,
+    ctx.session.spam.confirmMessageIds,
+  );
+});
 
 export default commands;
