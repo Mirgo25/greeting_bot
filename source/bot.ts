@@ -1,9 +1,10 @@
 import { Bot, type Context, session } from 'grammy';
 import { getConfig, getInitialSessionData } from './settings/config';
-import type { CustomContext } from './context';
+import type { CustomContext, CustomSession } from './context';
 import commands from './commands/commands';
 import { errorHandler, preMiddlewares } from './middlewares';
 import { getClients } from './settings/clients';
+import { freeStorage } from '@grammyjs/storage-free';
 
 async function main() {
   // global app config
@@ -25,6 +26,7 @@ async function main() {
     session({
       initial: getInitialSessionData,
       getSessionKey,
+      storage: freeStorage<CustomSession>(config.telegram.botToken),
     }),
   );
 
