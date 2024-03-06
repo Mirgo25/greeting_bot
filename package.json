@@ -4,6 +4,7 @@
   "description": "A telegram bot for greeting users with pictures",
   "main": "bot.js",
   "scripts": {
+    "start": "ts-node source/bot.ts",
     "dev": "npx nodemon source/bot.ts | pino-pretty --translateTime"
   },
   "devDependencies": {
