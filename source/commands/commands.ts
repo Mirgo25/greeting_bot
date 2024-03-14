@@ -26,6 +26,7 @@ import { handleInlineQuery } from './handlers/handleInlineQuery';
 import { getMediaNames } from '../utils/getFileNames';
 import {
   Animation,
+  Chat,
   InputFile,
   InputMedia,
   InputMediaPhoto,
@@ -34,20 +35,36 @@ import {
 } from 'grammy/types';
 import { getArrowsKeyboard } from '../utils/getArrowsKeyboard';
 import { handleArrowTrigger } from './handlers/handleArrowTrigger';
+import { addUser } from '../db/operations/users';
 
 const commands = new Composer<CustomContext>();
 
 // ------- COMMANDS -------
 commands.command(
   'start',
-  async (ctx) =>
-    replyWithMedia({
+  async (ctx) => {
+    const {
+      id: chatId,
+      username: userName,
+      first_name: firstName,
+      last_name: lastName,
+    } = ctx.chat as Chat.PrivateChat;
+    await addUser({
+      chatId,
+      userName,
+      firstName,
+      lastName,
+      userId: ctx.from?.id,
+    });
+    await replyWithMedia({
       ctx,
       mediaType: CALLBACK_QUERY_TRIGGER.ANIMATIONS,
       mediaPath: ANIMATION_PATH,
       notFoundMessage: ANIMATIONS_NOT_FOUND,
       inlineQueryTrigger: INLINE_QUERY_TRIGGER.SEND_ANIMATION,
-    }),
+    });
+  },
+
   // {
   //   const inlineKeyboard = new InlineKeyboard()
   //     .text(PICTURES, CALLBACK_QUERY_TRIGGER.PICTURES)
