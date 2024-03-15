@@ -144,12 +144,14 @@ commands.inlineQuery(INLINE_QUERY_TRIGGER.SEND_ANIMATION, async (ctx) =>
 
 // ------- FILTER QUERIES -------
 commands.on('chat_join_request', async (ctx) => {
-  ctx.session.spam.isConfirmed = true;
   const { user_chat_id } = ctx.chatJoinRequest;
   await ctx.api.deleteMessages(
     user_chat_id,
     ctx.session.spam.confirmMessageIds,
   );
+
+  ctx.session.spam.isConfirmed = true;
+  ctx.session.spam.confirmMessageIds = [];
 });
 
 export default commands;
